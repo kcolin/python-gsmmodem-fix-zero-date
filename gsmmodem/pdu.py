@@ -525,6 +525,13 @@ def _decodeTimestamp(byteIter):
     """ Decodes a 7-octet timestamp """
     dateStr = decodeSemiOctets(byteIter, 7)
     timeZoneStr = dateStr[-2:]
+
+    if dateStr[4] is 0:
+        dateStr[4] = 1
+
+    if dateStr[6] is 0:
+        dateStr[6] = 1
+
     return datetime.strptime(dateStr[:-2], '%y%m%d%H%M%S').replace(tzinfo=SmsPduTzInfo(timeZoneStr))
 
 def _encodeTimestamp(timestamp):
